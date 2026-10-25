@@ -31,16 +31,16 @@ Data stores: CockroachDB, Redis, and MongoDB.
 
 ### Components
 
-| Component | Description |
-| --- | --- |
-| **API** | The httpSMS Go API server |
-| **WireMock** | Existing fake Firebase and webhook endpoints |
+| Component            | Description                                                       |
+| -------------------- | ----------------------------------------------------------------- |
+| **API**              | The httpSMS Go API server                                         |
+| **WireMock**         | Existing fake Firebase and webhook endpoints                      |
 | **Adapter emulator** | HTTPS URL-backed phone gateway with an HTTP-only host control API |
-| **CockroachDB** | Relational database for API data |
-| **Redis** | Cache and local event queue backend |
-| **MongoDB** | Heartbeat and contact backend |
-| **Seed** | One-shot container that inserts integration users and API keys |
-| **Test runner** | Go tests running on the host |
+| **CockroachDB**      | Relational database for API data                                  |
+| **Redis**            | Cache and local event queue backend                               |
+| **MongoDB**          | Heartbeat and contact backend                                     |
+| **Seed**             | One-shot container that inserts integration users and API keys    |
+| **Test runner**      | Go tests running on the host                                      |
 
 ### Gateway Flows
 
@@ -142,12 +142,12 @@ collects service logs on failure, and always tears the stack down.
 
 ## Test Data
 
-| Entity | Value |
-| --- | --- |
-| User API key | `test-user-api-key` |
+| Entity         | Value                 |
+| -------------- | --------------------- |
+| User API key   | `test-user-api-key`   |
 | System API key | `system-user-api-key` |
-| User ID | `test-user-id` |
-| System user ID | `system-user-id` |
+| User ID        | `test-user-id`        |
+| System user ID | `system-user-id`      |
 
 Adapter tests create a unique gateway UUID, phone number, phone API key, and
 callback path per test. See [`seed.sql`](./seed.sql) for shared seed data.

@@ -32,13 +32,13 @@ class LoginActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         redirectToMain()
-        
+
         viewModel.initialize(this, getString(R.string.default_server_url))
 
         setContent {
             HttpSmsTheme {
                 val uiState by viewModel.uiState.collectAsState()
-                
+
                 LaunchedEffect(uiState.loginSuccess) {
                     if (uiState.loginSuccess) {
                         redirectToMain()

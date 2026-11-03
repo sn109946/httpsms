@@ -48,7 +48,7 @@ class MainViewModel : ViewModel() {
         val active1 = Settings.getActiveStatus(context, Constants.SIM1)
         val phone2 = Settings.getSIM2PhoneNumber(context) ?: ""
         val active2 = Settings.getActiveStatus(context, Constants.SIM2)
-        
+
         val timestamp = Settings.getHeartbeatTimestamp(context)
         val lastHeartbeat = if (timestamp == 0L) {
             "--"
@@ -85,7 +85,7 @@ class MainViewModel : ViewModel() {
 
     fun sendHeartbeat(context: Context, onComplete: (String?) -> Unit) {
         _uiState.value = _uiState.value.copy(isHeartbeatLoading = true)
-        
+
         viewModelScope.launch {
             val result = withContext(Dispatchers.IO) {
                 val charging = Settings.isCharging(context)
@@ -107,7 +107,7 @@ class MainViewModel : ViewModel() {
                     exception.javaClass.simpleName
                 }
             }
-            
+
             _uiState.value = _uiState.value.copy(isHeartbeatLoading = false)
             updateState(context, _uiState.value.appVersion)
             onComplete(result)

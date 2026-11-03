@@ -46,14 +46,14 @@ class LoginViewModel : ViewModel() {
         val isDualSim = SmsManagerService.isDualSIM(context)
         val phoneNumberSIM1 = Settings.getSIM1PhoneNumber(context)
         val phoneNumberSIM2 = Settings.getSIM2PhoneNumber(context)
-        
+
         _uiState.value = _uiState.value.copy(
             isDualSim = isDualSim,
             phoneNumberSIM1 = phoneNumberSIM1,
             phoneNumberSIM2 = phoneNumberSIM2,
             serverUrl = defaultServerUrl
         )
-        
+
         // Try to auto-detect if fields are empty
         if (phoneNumberSIM1.isEmpty() || (isDualSim && phoneNumberSIM2.isEmpty())) {
             autoDetectPhoneNumbers(context)
@@ -67,7 +67,7 @@ class LoginViewModel : ViewModel() {
         }
 
         val telephonyManager = context.getSystemService(Context.TELEPHONY_SERVICE) as TelephonyManager
-        
+
         var detectedSIM1 = _uiState.value.phoneNumberSIM1
         var detectedSIM2 = _uiState.value.phoneNumberSIM2
 
@@ -77,9 +77,9 @@ class LoginViewModel : ViewModel() {
             } else {
                 SubscriptionManager.from(context)
             }
-            
+
             val activeSubscriptions = try { subscriptionManager.activeSubscriptionInfoList } catch (e: Exception) { null }
-            
+
             if (detectedSIM1.isEmpty()) {
                 val line1Number = try { telephonyManager.line1Number } catch (e: Exception) { null }
                 if (!line1Number.isNullOrEmpty()) {
@@ -92,7 +92,7 @@ class LoginViewModel : ViewModel() {
             if (detectedSIM2.isEmpty() && activeSubscriptions != null && activeSubscriptions.size >= 2) {
                 detectedSIM2 = activeSubscriptions[1].number ?: ""
             }
-            
+
             Timber.d("Auto-detected numbers - SIM1: $detectedSIM1, SIM2: $detectedSIM2")
 
         } catch (e: SecurityException) {
@@ -124,7 +124,7 @@ class LoginViewModel : ViewModel() {
 
     fun login(context: Context, countryCode: String, onGooglePlayServicesError: (String) -> Unit, onFcmTokenMissing: () -> Unit) {
         val currentState = _uiState.value
-        
+
         // Validation logic from LoginActivity.onLoginClick
         if (Settings.getFcmToken(context) == null) {
             onFcmTokenMissing()
@@ -176,7 +176,7 @@ class LoginViewModel : ViewModel() {
                     val service = HttpSmsApiService(apiKey, URI(serverUrl))
                     val e164Phone1 = PhoneNumberValidator.formatE164(phone1, countryCode)
                     val response1 = service.updateFcmToken(e164Phone1, Constants.SIM1, Settings.getFcmToken(context) ?: "")
-                    
+
                     if (response1.second != null || response1.third != null) {
                         return@withContext Pair(response1.second, response1.third)
                     }

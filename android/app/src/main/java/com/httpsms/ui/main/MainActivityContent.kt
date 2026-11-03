@@ -199,7 +199,7 @@ fun MainScreen(
                 fontSize = 18.sp
             )
         }
-        
+
         Spacer(modifier = Modifier.height(16.dp))
     }
 }
